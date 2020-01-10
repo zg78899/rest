@@ -3,7 +3,7 @@ import useUndo from './Hooks/index';
 import './style.scss';
 
 function App() {
-  const {state,undo,redo,clear,canUndo,canRedo}=useUndo({});
+  const {state,undo,redo,clear,canUndo,canRedo,set}=useUndo({});
   return (
   <div className="container">
 
@@ -13,6 +13,7 @@ function App() {
       <button onClick={clear}>Clear</button>
     </div>
     <div className="gird">
+
     {((block,i,len)=>{
         while(++i<=len){
           let index=1;
