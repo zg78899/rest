@@ -49,37 +49,41 @@ const reducer = (state, action) => {
   }
 }
 //useUndo의 초기값을 현재 값으로 파라미터로 받기 위해서
-export function useUndo(initalPresent) {
+export default function useUndo(initalPresent) {
   const [state, dispatch] = useReducer(reducer, {
     ...initalState,
     present: initalPresent
   });
 
+  const canUndo = state.past.length !== 0;
+  const canRedo = state.future.length !== 0;
+
   const undo = useCallback(() => {
-    const canUndo = state.past.length !== 0;
-    const canRedo = state.future.length !== 0;
-
-
     const undo = useCallback(() => {
       if (canUndo) {
         dispatch({ type: 'Undo' })
       }
-    }, [canUndo, dispatch]);
-
+    }, [canUndo, dispatch]
+    );
+  
     const redo = useCallback(() => {
       if (canRedo) {
         dispatch({ type: 'Redo' })
       }
-    }, [canRedo, dispatch])
+    }, [canRedo, dispatch]
+    );
 
     const set = useCallback((newPresent) => {
       dispatch({ type: 'SET', newPresent })
-
-    }, [dispatch])
+    }, [dispatch]
+    );
 
     const clear = useCallback(() => {
       dispatch({ type: 'CLEAR', initalPresent })
-    }, [dispatch])
+    }, [dispatch]
+    );
 
-    return { state: state.prsent, set, undo, redo, clear, canUndo, canRedo }
-  }
+    return { state: state.prsent, set, undo, redo, clear, canUndo, canRedo };
+  };
+  
+
