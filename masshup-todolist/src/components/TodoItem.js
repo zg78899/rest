@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { MdDone, MdDelete } from 'react-icons/md';
+import { useTodoDispatch } from '../TodoContext';
 
 
 //왼쪽에 있는 체크 써클을 보여주는 컴포넌트
@@ -61,21 +62,25 @@ padding-bottom:12px;
 `;
 // &:hover는 특정한 상황 Remove컴포넌트의 마우스가 hover되었을때의 opercity1을 설정해주었다.
 function TodoItem({ id, done, text }) {
+  const dispatch=useTodoDispatch();
+  const onToggle=()=>dispatch({
+    type:'TOGGLE',
+    id
+  });
+  const onRemove=()=>dispatch({
+    type:'REMOVE',
+    id
+  })
   return (
     <TodoItemBlock>
-      <CheckCricled done={done}>
+      <CheckCricled onClick={onToggle} done={done}>
         {done && <MdDone />}
       </CheckCricled>
       <Text done={done}>{text}</Text>
-      <Remove>
+      <Remove onClick={onRemove}>
         <MdDelete />
       </Remove>
     </TodoItemBlock>
-
-
-
   )
-
-
 }
-export default TodoItem;
+export default React.memo(TodoItem);

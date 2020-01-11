@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext } from 'react';
+import React, { useReducer, createContext, useContext ,useRef} from 'react';
 
 const initalTodos = [
   {
@@ -40,24 +40,43 @@ function todoReducer(state, action) {
 }
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
+const TodoNextIdContext=createContext();
 
 
 export function TodoProvider({ children }) {
   const [state, dispatch] = useReducer(todoReducer, initalTodos);
+  const nextId=useRef(5);
   return (
     <TodoStateContext.Provider value={state}>
       <TodoDispatchContext.Provider value={dispatch}>
+        <TodoNextIdContext.Provider value={nextId}> 
         {children}
+        </TodoNextIdContext.Provider>
       </TodoDispatchContext.Provider>
     </TodoStateContext.Provider>
   )
 }
-//커스텀 훅을 사용
+//커스텀 훅을 사용(state,dispatch을 나눠서 사용함,가져와서 사용하기에 쉽다.)
+//context로 App컴포넌트를 감싸 주지않았을때의 에러 처리를 함
 export function useTodoState(){
-  return useContext(TodoStateContext);
+  const context= useContext(TodoStateContext);
+if(!context){
+  throw new Error('cannot find TodoProvider')
+}
+return context;
 
 }
 export function useTodoDispatch(){
-  return useContext(TodoDispatchContext);
+  const context= useContext(TodoDispatchContext);
+  if(!context){
+    throw new Error('cannot find TodoProvider')
+  }
+  return context;
 }
-
+export function useTodoNextId(){
+  const context= useContext(TodoNextIdContext);
+  if(!context){
+    throw new Error('cannot find TodoProvider')
+  }
+  return context;
+}
