@@ -4,7 +4,7 @@ import { MdAdd } from 'react-icons/md';
 import { useTodoDispatch, useTodoNextId } from '../TodoContext';
 
 
-const CircledButton = styled.div`
+const CircledButton = styled.button`
   background:#38d9a9;
 
   &:hover{
@@ -99,7 +99,7 @@ function TodoCreate() {
     setOpen(false);
     nextId.current +=1;
   };
-  
+
   return (
     <>
       {open && <IsertFormPostioner>
