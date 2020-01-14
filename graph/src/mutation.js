@@ -1,4 +1,5 @@
 import { gql } from 'graphql-tag'
+
 const ADD_STAR = gql`
 mutation AddStar($repoid:ID!){
    addStar(input:{starrableId:$repoid}){
@@ -9,8 +10,9 @@ mutation AddStar($repoid:ID!){
       viewerHasStarred
     }
   }
-}`
+}`;
 const Remove_Star = gql`
+
 mutation RemoveStar($repoid:ID!){
    removeStar(input:{starrableId:$repoid}){
     starrable{
@@ -20,5 +22,5 @@ mutation RemoveStar($repoid:ID!){
       viewerHasStarred
     }
   }
-}`
+}`;
 export { ADD_STAR, Remove_Star };

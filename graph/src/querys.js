@@ -16,7 +16,7 @@ query Myrepositories{
     }
   }
 }
-`
+`;
 const userQuery = gql` {
     viewer {
      name
