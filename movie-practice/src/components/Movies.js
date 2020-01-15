@@ -5,11 +5,14 @@ const DEFAULT_PLACEHOLDER_IMAGE=
 
 
 const Movie=({movie})=> {
+  console.log(movie)
+  console.log(movie.Poster)
+  console.log(movie.title)
   const poster=
   movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
   return (
     <div className="movie">
-      <h2>{movie.title}</h2>
+      <h2>{movie.Title}</h2>
       <div>
         <img
         width="200"

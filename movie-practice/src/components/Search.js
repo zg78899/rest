@@ -10,11 +10,14 @@ const Search=(props)=> {
     setSearchValue('');
   }
   const callSearchFunciton =(e)=>{
+    console.log(e);
     e.preventDefault();
     props.search(searchValue);
     resetInputField();
-
   }
+  console.log(props.search);
+  
+  
   return (
     <form className="search">
       <input
