@@ -5,6 +5,7 @@ body {
 ol,
 ul {
   padding-left: 30px;
+  
 }
 .board-row:after {
   clear: both;
@@ -30,6 +31,9 @@ ul {
 }
 .square:focus {
   outline: none;
+}
+.square.highlight{
+  background: aqua;
 }
 .kbd-navigation .square:focus {
   background: #ddd;

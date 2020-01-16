@@ -1,52 +1,65 @@
 import React, { Component } from 'react';
 import Board from './Board';
 
-class Game extends Component{
+
+class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      history:[{
-        squares: Array(9).fill(null)
-      }],
-      stepNumber:0,
+      history: [
+        {
+          squares: Array(9).fill(null)
+        }
+      ],
+      stepNumber: 0,
       xIsNext: true,
     }
   }
   handleClick(i) {
-    const history=this.state.history;
-    const current=history[history.length -1];
-    const squares=current.squares.slice();
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    console.log(history);
+    console.log(current);
+    console.log(squares);
 
-    if(calculateWinner(squares)||squares[i]){
+    if (calculateWinner(squares).winner || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history:history.concat([{
+      history: history.concat([{
         squares: squares,
       }]),
+      stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
   }
-  jumpTo(step){
+  jumpTo(step) {
     this.setState({
-      stepNumber:step,
-      xIsNext:(step %2)===0,
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
     })
   }
-  
-  render(){
-    const history=this.state.history;
-    const current =history[history.length -1];
-    const winner=calculateWinner(current.squares);
+  render() {
 
-    const moves= history.map((step,move)=>{
-      const desc =move ?
-      'Go to move #'+ move :
-      'Go to game start';
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winInfo = calculateWinner(current.squares);
+    const winner = winInfo.winner
+    console.log(winner);
+    console.log(winInfo);
+    console.log(winInfo.isDraw);
+    console.log(current);
+    console.log(history);
+
+    let moves = history.map((step, move) => {
+      const desc = move ?
+        'Go to move #' + move :
+        'Go to game start';
       return (
         <li key={move}>
-          <button onClick={()=>this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       )
     })
@@ -55,19 +68,25 @@ class Game extends Component{
       status = "Winner :" + winner
     }
     else {
-       status = 'Next Player : ' + (this.state.xIsNext ? 'X' : 'O');
+      if (winInfo.isDraw) {
+        status = "Draw !!!";
+      } else {
+        status = 'Next Player : ' + (this.state.xIsNext ? 'X' : 'O');
+      }
     }
-    return(
     
+    return (
+
       <div className="game">
         <div className="game-board">
           <Board
-          squares={current.squares}
-          onClick={(i)=>this.handleClick(i)}/>
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+            winLine={winInfo.line} />
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <div>{moves}</div>
+          <ol>{moves}</ol>
         </div>
       </div>
     )
@@ -76,6 +95,7 @@ class Game extends Component{
 export default Game;
 
 function calculateWinner(squares) {
+
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -85,13 +105,28 @@ function calculateWinner(squares) {
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6],
-
   ];
+
   for (let i = 0; i < lines.length; i++) {
-    const [a,b,c]=lines[i];
+    const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return {
+        winner: squares[a],
+        line:lines[i],
+        isDraw: false
+      }
     }
   }
-  return null;
+  let isDraw = true;
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i] === null) {
+      isDraw = false;
+      break;
+    }
+  }
+  return {
+    winner: null,
+    line:null,
+    isDraw: isDraw
+  };
 }

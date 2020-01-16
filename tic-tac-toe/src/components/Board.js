@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import Square from './Square';
 
 
+
 class Board extends Component {
   renderSquare(i) {
+   const winLine=this.props.winLine; 
     return (
       <Square
         value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)} />
+        onClick={() => this.props.onClick(i)}
+        highlight={winLine && winLine.includes(i)}
+        
+         />
     )
   }
 render(){
