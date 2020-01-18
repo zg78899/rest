@@ -1,16 +1,14 @@
 {
-  "name": "reactjs-books-review",
+  "name": "styling-with-module",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "antd": "^3.26.7",
+    "polished": "^3.4.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-error-boundary": "^1.2.5",
-    "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "styled-components": "^5.0.0"
   },
@@ -20,23 +18,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.{js,jsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
-  },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "prettier"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -49,11 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "^6.9.0",
-    "husky": "^4.0.10",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1"
   }
 }
