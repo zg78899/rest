@@ -28,4 +28,5 @@ function App() {
     </ErrorBoundary>
   );
 }
+
 export default App;
