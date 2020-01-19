@@ -12,7 +12,7 @@ const StyledImg = styled.img`
 
 const SigninBg = () => (
   <StyledCol>
-    <StyledImg src="/logo512.png" alt="Signin" />
+    <StyledImg src="/libary1.jpg" alt="Signin" />
   </StyledCol>
 );
 export default SigninBg;
