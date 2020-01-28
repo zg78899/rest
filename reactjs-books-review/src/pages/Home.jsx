@@ -24,15 +24,14 @@ const Home = ({ token }) => {
       })
       .then(res => {
         // console.log(res.data);
-        setBooks([...books, ...res.data]);
+        setBooks(res.data);
       });
-  }, [books, token]);
+  }, [token]);
 
   const RemoveBook = bookId => {
     // console.log(bookId);
     setBooks(books.filter(book => book.bookId !== bookId));
   };
-
   return (
     <div>
       <Navs token={token} />
@@ -50,5 +49,4 @@ const Home = ({ token }) => {
     </div>
   );
 };
-
 export default withAuth(Home);
