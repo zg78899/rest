@@ -1,6 +1,8 @@
-import React from 'react';
-import { Col, Button } from 'antd';
+import React, { useState } from 'react';
+import { Col, Button, message } from 'antd';
 import styled from 'styled-components';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const StyledCol = styled(Col).attrs(() => ({
   span: 12
@@ -97,36 +99,85 @@ const StyledSpan = styled.span.attrs(() => ({
 `;
 
 function SigninForm() {
+  const history = useHistory();
+  const emailRef = React.createRef();
+  const passwordRef = React.createRef();
+
+  const [loading, setLoading] = useState(false);
+
+  async function click() {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    console.log(email, password);
+    try {
+      setLoading(true);
+      const response = await axios.post('https://api.marktube.tv/v1/me', {
+        email,
+        password
+      });
+      const { token } = response.data;
+      setLoading(false);
+      localStorage.setItem('token', token);
+      history.push('/');
+    } catch (error) {
+      setLoading(false);
+      if (error.response.data.error === 'USER_NOT_EXIST') {
+        message.error('일치하는 유저가 없습니다.');
+      }
+      if (error.response.data.error === 'PASSWORD_NOT_MATCH') {
+        message.error('비밀번호가 일치하지않습니다.');
+      } else {
+        message.error('로그인에 문제가 있습니다.');
+      }
+    }
+  }
   return (
     <StyledCol>
       <Title>Log in. Start Searching</Title>
       <LogInForm>
         <div>
-          <InputTitle autofocus>
+          <InputTitle>
             Email
             <StyledSpan />
           </InputTitle>
-          <Input type="email" placeholder="Enter your Email adress" />
+          <Input
+            autoFocus
+            name="email"
+            type="email"
+            placeholder="Enter your Email adress"
+            ref={emailRef}
+          />
         </div>
         <div>
           <InputTitle>
             Passsword
             <StyledSpan />
           </InputTitle>
-          <Input type="password" placeholder="Enter your password" />
+          <Input
+            name="password"
+            type="password"
+            placeholder="Enter your password"
+            ref={passwordRef}
+          />
         </div>
         <ButtonArea>
-          <StyledButton>Sign Up</StyledButton>
+          <StyledButton onClick={click} size="large" loading={loading}>
+            Sign In
+          </StyledButton>
         </ButtonArea>
       </LogInForm>
       <LinkForm>
         <LinkArea>
           <LinkTitle>Need to cretae an account?</LinkTitle>
-          <LinkButton>Sign Up</LinkButton>
+          <Link to="/signup">
+            <LinkButton>Sign Up</LinkButton>
+          </Link>
         </LinkArea>
         <LinkArea>
           <LinkTitle>Forgot your pssword?</LinkTitle>
-          <LinkButton>RECOVERY</LinkButton>
+          <Link to="/forgot">
+            <LinkButton>RECOVERY</LinkButton>
+          </Link>
         </LinkArea>
       </LinkForm>
     </StyledCol>
