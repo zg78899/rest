@@ -1,5 +1,21 @@
 import React from 'react';
 import * as axios from 'axios';
+import styled from 'styled-components';
+
+const StyledButton = styled.div`
+  background: #99ccff;
+  text-align: center;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+`;
+
+const StyledSpan = styled.span.attrs(() => ({
+  children: '*'
+}))`
+  color: #971931;
+`;
 
 function Book(props) {
   const click = async () => {
@@ -22,18 +38,31 @@ function Book(props) {
   return (
     <div
       style={{
-        border: '1px solid black',
-        passing: 10,
+        border: '1px solid #28546a',
+        borderRadius: 10,
+        padding: 10,
         margin: 10
       }}
     >
-      <h2>{props.title}</h2>
-      <p>{props.message}</p>
-      <p>{props.author}</p>
+      <h2>
+        Title
+        <StyledSpan /> :{props.title}
+      </h2>
       <p>
-        <a href={props.url}>{props.url}</a>
+        Comment
+        <StyledSpan />: {props.message}
       </p>
-      <button onClick={click}>delete</button>
+      <p>
+        Author
+        <StyledSpan />: {props.author}
+      </p>
+      <p>
+        <a href={props.url}>
+          Link URL
+          <StyledSpan />: {props.url}
+        </a>
+      </p>
+      <StyledButton onClick={click}>delete</StyledButton>
     </div>
   );
 }

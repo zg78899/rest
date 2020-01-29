@@ -3,6 +3,7 @@ import { Input, Button, Col, message } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
 import { withRouter, useHistory } from 'react-router-dom';
+import withAuth from '../hocs/withAuth';
 
 const InputTitle = styled.div`
   font-family: Roboto;
@@ -19,7 +20,7 @@ const InputArea = styled.div`
 `;
 
 const StyledInput = styled(Input)`
-  width: 3201px;
+  width: 320px;
   border-radius: 1px;
   border-width: 1px;
   font-family: Roboto;
@@ -53,18 +54,35 @@ const StyledSpan = styled.span.attrs(() => ({
   color: #971931;
 `;
 
-function SigninForm(props) {
+const StyledWrapped = styled.div`
+  position: fixed;
+  width: 400px;
+  height: 420px;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0.5);
+  background: #99ccff;
+  border-radius: 0 10px 10px 10px;
+`;
+
+function SigninForm({
+  token,
+  handleCancel,
+  getBooks,
+  setAddVisible,
+  addVisible
+}) {
   // const history =useHistory();
   const titleInput = React.createRef();
   const messageInput = React.createRef();
   const authorInput = React.createRef();
   const urlInput = React.createRef();
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const click = async () => {
-    const { history, token } = props;
-    console.log(props);
+    // const { history, token } = props;
+    console.log(token);
 
     const title = titleInput.current.state.value;
     const messageValue = messageInput.current.state.value;
@@ -72,8 +90,8 @@ function SigninForm(props) {
     const url = urlInput.current.state.value;
 
     try {
-      setLoading(true);
-      await axios.post(
+      // setLoading(true);
+      const response = await axios.post(
         'https://api.marktube.tv/v1/book',
         {
           title,
@@ -87,48 +105,65 @@ function SigninForm(props) {
           }
         }
       );
-      history.push('/');
+      console.log(response);
+      console.log(getBooks);
+      getBooks();
+      console.log(setAddVisible);
+      setAddVisible(!addVisible);
+
+      // handleCancel();
+      console.log(handleCancel);
+
+      // history.push('/');
     } catch (error) {
-      message.error(error.response.data.error);
-      setLoading(false);
+      console.log(error);
+      // setLoading(false);
     }
   };
+
   return (
-    <Col span={12} style={{ verticalAlign: 'top' }}>
-      <InputTitle>
-        Title
-        <StyledSpan />
-      </InputTitle>
-      <InputArea>
-        <StyledInput placeholder="Title" ref={titleInput} />
-      </InputArea>
-      <InputTitle top={10}>
-        Comment
-        <StyledSpan />
-      </InputTitle>
-      <InputArea>
-        <StyledInput placeholder="Comment" ref={messageInput} />
-      </InputArea>
-      <InputTitle top={10}>
-        Author
-        <StyledSpan />
-      </InputTitle>
-      <InputArea>
-        <StyledInput placeholder="Author" ref={authorInput} />
-      </InputArea>
-      <InputTitle top={10}>
-        URL
-        <StyledSpan />
-      </InputTitle>
-      <InputArea>
-        <StyledInput placeholder="URL" ref={urlInput} />
-      </InputArea>
-      <ButtonArea>
-        <StyledButton size="large" loading={loading} onClick={click}>
-          추가하기
-        </StyledButton>
-      </ButtonArea>
-    </Col>
+    <StyledWrapped>
+      <Col
+        span={12}
+        style={{
+          verticalAlign: 'top'
+        }}
+      >
+        <InputTitle>
+          Title
+          <StyledSpan />
+        </InputTitle>
+        <InputArea>
+          <StyledInput placeholder="Title" ref={titleInput} />
+        </InputArea>
+        <InputTitle top={10}>
+          Comment
+          <StyledSpan />
+        </InputTitle>
+        <InputArea>
+          <StyledInput placeholder="Comment" ref={messageInput} />
+        </InputArea>
+        <InputTitle top={10}>
+          Author
+          <StyledSpan />
+        </InputTitle>
+        <InputArea>
+          <StyledInput placeholder="Author" ref={authorInput} />
+        </InputArea>
+        <InputTitle top={10}>
+          URL
+          <StyledSpan />
+        </InputTitle>
+        <InputArea>
+          <StyledInput placeholder="URL" ref={urlInput} />
+        </InputArea>
+        <ButtonArea>
+          <StyledButton size="large" onClick={click}>
+            추가하기
+          </StyledButton>
+        </ButtonArea>
+      </Col>
+    </StyledWrapped>
   );
 }
-export default withRouter(SigninForm);
+export default withAuth(SigninForm);

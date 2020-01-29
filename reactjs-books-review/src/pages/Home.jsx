@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import withAuth from '../hocs/withAuth';
 import axios from 'axios';
 import Navs from '../components/Navs';
 import Book from '../components/Book';
+import Add from './Add';
 
 const Home = ({ token }) => {
+  const [addVisible, setAddVisible] = useState(false);
   const [books, setBooks] = useState([]);
-  useEffect(() => {
+
+  const getBooks = useCallback(() => {
     axios
       .get('https://api.marktube.tv/v1/book', {
         headers: {
@@ -17,27 +20,43 @@ const Home = ({ token }) => {
         // console.log(res.data);
         setBooks(res.data);
       });
-  }, [token]);
+  });
 
+  useEffect(() => {
+    getBooks();
+  }, [getBooks, token]);
   const RemoveBook = bookId => {
     // console.log(bookId);
     setBooks(books.filter(book => book.bookId !== bookId));
   };
   return (
-    <div>
-      <Navs token={token} />
-      <h1>Home</h1>
-      <ul>
-        {books.map(book => (
-          <Book
-            {...book}
-            token={token}
-            key={book.bookId}
-            RemoveBook={RemoveBook}
-          />
-        ))}
-      </ul>
-    </div>
+    <>
+      {addVisible && (
+        <Add
+          getBooks={getBooks}
+          addVisible={addVisible}
+          setAddVisible={setAddVisible}
+        />
+      )}
+      <div>
+        <Navs
+          token={token}
+          addVisible={addVisible}
+          setAddVisible={setAddVisible}
+        />
+        <h1 style={{ paddingLeft: 40, textAlign: 'center' }}>Home</h1>
+        <ul>
+          {books.map(book => (
+            <Book
+              {...book}
+              token={token}
+              key={book.bookId}
+              RemoveBook={RemoveBook}
+            />
+          ))}
+        </ul>
+      </div>
+    </>
   );
 };
 export default withAuth(Home);
