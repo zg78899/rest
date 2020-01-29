@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { withRouter, useHistory } from 'react-router-dom';
 import withAuth from '../hocs/withAuth';
+import { MdClear } from 'react-icons/md';
 
 const InputTitle = styled.div`
   font-family: Roboto;
@@ -123,6 +124,9 @@ function SigninForm({
 
   return (
     <StyledWrapped>
+      <button>
+        <MdClear />
+      </button>
       <Col
         span={12}
         style={{
