@@ -6,6 +6,7 @@ import Example2 from './components/Example2';
 import Example3 from './components/Example3';
 import PersonContext from './contexts/PersonContext';
 function App() {
+  
   const [persons,setPersons]=useState([
     {id:0,name:'kim',age:27},
     {id:1,name:'park',age:25}
