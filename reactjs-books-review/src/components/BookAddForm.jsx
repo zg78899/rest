@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { withRouter, useHistory } from 'react-router-dom';
 import withAuth from '../hocs/withAuth';
+import { MdClear } from 'react-icons/md';
 
 const InputTitle = styled.div`
   font-family: Roboto;
@@ -57,12 +58,26 @@ const StyledSpan = styled.span.attrs(() => ({
 const StyledWrapped = styled.div`
   position: fixed;
   width: 400px;
-  height: 420px;
+  height: 430px;
   top: 0;
   left: 0;
   box-shadow: 0 0 8px rgba(0, 0, 0.5);
   background: #99ccff;
   border-radius: 0 10px 10px 10px;
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 10px;
+`;
+
+const CloseButton = styled.button`
+  border-radius: 50%;
+  text-align: right;
+  align-items: middle;
+
+  &:hover {
+    background-color: #28546a;
+    color: white;
+  }
 `;
 
 function SigninForm({
@@ -110,19 +125,16 @@ function SigninForm({
       getBooks();
       console.log(setAddVisible);
       setAddVisible(!addVisible);
-
-      // handleCancel();
       console.log(handleCancel);
-
-      // history.push('/');
+      // handleCancel();
     } catch (error) {
       console.log(error);
-      // setLoading(false);
     }
   };
-
+  console.log(setAddVisible);
   return (
     <StyledWrapped>
+      <CloseButton onClick={() => setAddVisible(!addVisible)}>X</CloseButton>
       <Col
         span={12}
         style={{
