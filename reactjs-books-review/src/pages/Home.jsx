@@ -20,11 +20,12 @@ const Home = ({ token }) => {
         // console.log(res.data);
         setBooks(res.data);
       });
-  });
+  }, [token]);
 
   useEffect(() => {
     getBooks();
   }, [getBooks, token]);
+
   const RemoveBook = bookId => {
     // console.log(bookId);
     setBooks(books.filter(book => book.bookId !== bookId));
